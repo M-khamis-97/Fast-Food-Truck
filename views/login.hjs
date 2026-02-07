@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-left">
+            <div class="login-hero">
+                <div class="truck-icon">🚚</div>
+                <h1 class="brand-title">GIU Food Truck</h1>
+                <p class="brand-tagline">Your favorite food delivered fresh on campus!</p>
+                <div class="features">
+                    <div class="feature-item">
+                        <span class="feature-icon">🍔</span>
+                        <span>Delicious Meals</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <span>Quick Service</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📍</span>
+                        <span>Multiple Locations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="login-right">
+            <div class="login-box">
+                <div class="login-header">
+                    <h2>Welcome Back!</h2>
+                    <p>Sign in to continue your journey</p>
+                </div>
+                
+                <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">
+                            <span class="input-icon">📧</span> Email Address
+                        </label>
+                        <input type="email" class="form-control modern-input" id="email" name="email" placeholder="yourname@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">
+                            <span class="input-icon">🔒</span> Password
+                        </label>
+                        <input type="password" class="form-control modern-input" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block btn-lg modern-btn">
+                        <span>Sign In</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="/register" class="signup-link">Create Account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/src/login.js"></script>
+</body>
+</html>

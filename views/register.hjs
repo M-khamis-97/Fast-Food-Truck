@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>🚚 GIU Food Truck</h2>
+                    <p>Create your account</p>
+                </div>
+                
+                <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+                <div id="successMessage" class="alert alert-success" style="display: none;"></div>
+                
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthdate">Birth Date</label>
+                        <input type="date" class="form-control" id="birthdate" name="birthdate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="role">Account Type</label>
+                        <select class="form-control" id="role" name="role" required>
+                            <option value="customer">Customer</option>
+                            <option value="truckowner">Truck Owner</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="truckNameGroup" style="display: none;">
+                        <label for="truckName">Truck Name <span style="color: red;">*</span></label>
+                        <input type="text" class="form-control" id="truckName" name="truckName" placeholder="Enter your truck name (e.g., Mama's Tacos)">
+                        <small class="form-text text-muted">This will be your truck's display name. Required for truck owners.</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Register</button>
+                </form>
+                
+                <div class="text-center mt-20">
+                    <p>Already have an account? <a href="/">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/src/register.js"></script>
+</body>
+</html>

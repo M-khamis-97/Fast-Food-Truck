@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/dashboard">🚚 GIU Food Truck</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/dashboard">Home</a></li>
+                <li><a href="/trucks">Browse Trucks</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <li><a href="/myOrders">My Orders</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 30px;">
+        <div class="dashboard-header">
+            <h1>Welcome, <span id="userName">Customer</span>! 👋</h1>
+            <p>Order delicious food from your favorite food trucks</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <span style="font-size: 48px;">🚚</span>
+                    <h3>Browse Trucks</h3>
+                    <p>Explore available food trucks</p>
+                    <a href="/trucks" class="btn btn-primary">View Trucks</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <span style="font-size: 48px;">🛒</span>
+                    <h3>View Cart</h3>
+                    <p>Check your shopping cart</p>
+                    <a href="/cart" class="btn btn-primary">Go to Cart</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <span style="font-size: 48px;">📦</span>
+                    <h3>My Orders</h3>
+                    <p>Track your order history</p>
+                    <a href="/myOrders" class="btn btn-primary">View Orders</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-20">
+            <div class="col-md-12">
+                <div class="card">
+                    <h3>How It Works</h3>
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <h1 style="color: #ff6b35;">1</h1>
+                            <h4>Browse Trucks</h4>
+                            <p>Choose from available food trucks</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h1 style="color: #ff6b35;">2</h1>
+                            <h4>Select Items</h4>
+                            <p>Add menu items to your cart</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h1 style="color: #ff6b35;">3</h1>
+                            <h4>Place Order</h4>
+                            <p>Complete your order</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h1 style="color: #ff6b35;">4</h1>
+                            <h4>Pick Up</h4>
+                            <p>Collect your delicious food!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+        // Set user name from server-rendered data
+        $(document).ready(function() {
+            const userName = '{{{user.name}}}' || 'Customer';
+            $('#userName').text(userName);
+        });
+
+        function logout() {
+            $.ajax({
+                url: '/api/v1/logout',
+                method: 'POST',
+                success: function() {
+                    window.location.href = '/';
+                },
+                error: function() {
+                    window.location.href = '/';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

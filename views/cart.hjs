@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/dashboard">🚚 GIU Food Truck</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/trucks">Browse Trucks</a></li>
+                <li class="active"><a href="/cart">Cart</a></li>
+                <li><a href="/myOrders">My Orders</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 30px;">
+        <h2>Shopping Cart 🛒</h2>
+        <hr>
+        
+        <div id="cartContainer">
+            <!-- Cart items will be loaded here -->
+        </div>
+        
+        <div id="emptyCart" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">🛒</div>
+            <h3>Your cart is empty</h3>
+            <p>Add some delicious items to your cart!</p>
+            <a href="/trucks" class="btn btn-primary btn-lg">Browse Trucks</a>
+        </div>
+        
+        <div id="cartSummary" style="display: none;">
+            <div class="cart-total">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Total: <span id="cartTotal">0.00</span> EGP</h3>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="pickupTime"><strong>Scheduled Pickup Time:</strong></label>
+                            <input type="datetime-local" class="form-control" id="pickupTime" required>
+                            <div class="alert alert-info" style="margin-top: 10px; padding: 8px 12px; font-size: 13px;">
+                                <strong>⏰ Important:</strong> Select when you want to pick up your order<br>
+                                <strong>Minimum:</strong> 30 minutes from now
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-right" style="margin-top: 25px;">
+                        <button class="btn btn-success btn-lg" id="placeOrderBtn" onclick="placeOrder()">
+                            <span>Place Order</span> <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+        // Toast notification helper
+        function showToast(type, message) {
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+                <div id="${toastId}" class="toast-notification alert alert-${type === 'success' ? 'success' : 'danger'}">
+                    <button type="button" class="close" onclick="$('#${toastId}').remove()">&times;</button>
+                    <strong>${type === 'success' ? 'Success!' : 'Error!'}</strong> 
+                    <span>${message}</span>
+                </div>
+            `;
+            $('body').append(toastHtml);
+            setTimeout(function() { $('#' + toastId).addClass('show'); }, 10);
+            setTimeout(function() {
+                $('#' + toastId).removeClass('show');
+                setTimeout(function() { $('#' + toastId).remove(); }, 500);
+            }, 4000);
+        }
+        
+        // Confirmation modal helper
+        function showConfirm(message, onConfirm) {
+            const modalHtml = `
+                <div class="modal fade" id="dynamicConfirmModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Confirm Action</h4>
+                            </div>
+                            <div class="modal-body">${message}</div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="dynamicConfirmButton">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('#dynamicConfirmModal').remove();
+            $('body').append(modalHtml);
+            $('#dynamicConfirmButton').on('click', function() {
+                $('#dynamicConfirmModal').modal('hide');
+                onConfirm();
+            });
+            $('#dynamicConfirmModal').modal('show');
+            $('#dynamicConfirmModal').on('hidden.bs.modal', function() { $(this).remove(); });
+        }
+    </script>
+    <script src="/src/cart.js"></script>
+    <script>
+        function logout() {
+            $.ajax({
+                url: '/api/v1/logout',
+                method: 'POST',
+                success: function() {
+                    window.location.href = '/';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

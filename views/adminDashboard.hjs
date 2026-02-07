@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/adminDashboard">🔐 GIU Food Truck Admin</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><strong>{{user.name}}</strong> (Admin)</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 30px;">
+        <h2>Admin Dashboard 🔐</h2>
+        <p class="text-muted">Manage all users and trucks in the system</p>
+        <hr>
+        
+        <!-- Statistics Cards -->
+        <div class="row mb-20">
+            <div class="col-md-2">
+                <div class="panel panel-primary">
+                    <div class="panel-body text-center">
+                        <h3 id="totalUsers">-</h3>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-info">
+                    <div class="panel-body text-center">
+                        <h3 id="totalCustomers">-</h3>
+                        <p>Customers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-warning">
+                    <div class="panel-body text-center">
+                        <h3 id="totalOwners">-</h3>
+                        <p>Truck Owners</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-danger" id="pendingPanel" style="cursor: pointer;" onclick="$('a[href=\'#pending\']').tab('show')">
+                    <div class="panel-body text-center">
+                        <h3 id="pendingApprovals">-</h3>
+                        <p>Pending Approvals</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-success">
+                    <div class="panel-body text-center">
+                        <h3 id="totalTrucks">-</h3>
+                        <p>Total Trucks</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <h3 id="totalOrders">-</h3>
+                        <p>Total Orders</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#customers" role="tab" data-toggle="tab">Customers</a></li>
+            <li role="presentation"><a href="#owners" role="tab" data-toggle="tab">Truck Owners</a></li>
+            <li role="presentation"><a href="#trucks" role="tab" data-toggle="tab">Trucks Management</a></li>
+            <li role="presentation"><a href="#pending" role="tab" data-toggle="tab">Pending Approvals <span id="pendingBadge" class="badge" style="background-color: #d9534f;">0</span></a></li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Customers Tab -->
+            <div role="tabpanel" class="tab-pane active" id="customers">
+                <div style="margin-top: 20px;">
+                    <h3>Customers Management</h3>
+                    <div id="customersContainer">
+                        <!-- Customers table will be loaded here -->
+                    </div>
+                    <div id="emptyCustomers" class="empty-state" style="display: none;">
+                        <div class="empty-state-icon">👥</div>
+                        <h3>No Customers Found</h3>
+                        <p>No customers in the system yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Truck Owners Tab -->
+            <div role="tabpanel" class="tab-pane" id="owners">
+                <div style="margin-top: 20px;">
+                    <h3>Truck Owners Management</h3>
+                    <div id="ownersContainer">
+                        <!-- Owners table will be loaded here -->
+                    </div>
+                    <div id="emptyOwners" class="empty-state" style="display: none;">
+                        <div class="empty-state-icon">🚚</div>
+                        <h3>No Truck Owners Found</h3>
+                        <p>No truck owners in the system yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trucks Tab -->
+            <div role="tabpanel" class="tab-pane" id="trucks">
+                <div style="margin-top: 20px;">
+                    <h3>Trucks Management</h3>
+                    <div id="trucksContainer">
+                        <!-- Trucks table will be loaded here -->
+                    </div>
+                    <div id="emptyTrucks" class="empty-state" style="display: none;">
+                        <div class="empty-state-icon">🚚</div>
+                        <h3>No Trucks Found</h3>
+                        <p>No trucks in the system yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Approvals Tab -->
+            <div role="tabpanel" class="tab-pane" id="pending">
+                <div style="margin-top: 20px;">
+                    <h3>Pending Truck Owner Approvals</h3>
+                    <p class="text-muted">Review and approve new truck owner registrations</p>
+                    <div id="pendingContainer">
+                        <!-- Pending approvals table will be loaded here -->
+                    </div>
+                    <div id="emptyPending" class="empty-state" style="display: none;">
+                        <div class="empty-state-icon">✓</div>
+                        <h3>No Pending Approvals</h3>
+                        <p>All truck owner registrations have been processed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+        // Toast notification helper
+        function showToast(type, message) {
+            const toastId = 'toast-' + Date.now();
+            const bgColor = type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : '#dc3545';
+            const icon = type === 'success' ? '✓' : type === 'warning' ? '⚠' : '✕';
+            const toastHtml = `
+                <div id="${toastId}" class="toast-notification" style="
+                    position: fixed; top: 20px; right: 20px; z-index: 9999;
+                    background: ${bgColor}; color: white; padding: 15px 20px;
+                    border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    min-width: 300px; max-width: 500px; opacity: 0;
+                    transition: all 0.3s ease; transform: translateX(400px);">
+                    <button type="button" class="close" style="color: white; opacity: 0.8; float: right; font-size: 20px; line-height: 1; background: none; border: none; cursor: pointer;" onclick="$('#${toastId}').remove()">&times;</button>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 24px;">${icon}</span>
+                        <span style="font-size: 14px; font-weight: 500;">${message}</span>
+                    </div>
+                </div>
+            `;
+            $('body').append(toastHtml);
+            setTimeout(function() { 
+                $('#' + toastId).css({opacity: 1, transform: 'translateX(0)'}); 
+            }, 10);
+            setTimeout(function() {
+                $('#' + toastId).css({opacity: 0, transform: 'translateX(400px)'});
+                setTimeout(function() { $('#' + toastId).remove(); }, 300);
+            }, 4000);
+        }
+        
+        // Confirmation modal helper
+        function showConfirm(message, onConfirm) {
+            const modalHtml = `
+                <div class="modal fade" id="dynamicConfirmModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content" style="border-radius: 8px; overflow: hidden;">
+                            <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                                <button type="button" class="close" data-dismiss="modal" style="color: white; opacity: 0.9;">&times;</button>
+                                <h4 class="modal-title">⚠️ Confirm Action</h4>
+                            </div>
+                            <div class="modal-body" style="padding: 30px; font-size: 15px;">${message}</div>
+                            <div class="modal-footer" style="border-top: 1px solid #eee;">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="padding: 8px 20px;">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="dynamicConfirmButton" style="padding: 8px 20px; background: #667eea; border: none;">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('#dynamicConfirmModal').remove();
+            $('body').append(modalHtml);
+            $('#dynamicConfirmButton').on('click', function() {
+                $('#dynamicConfirmModal').modal('hide');
+                onConfirm();
+            });
+            $('#dynamicConfirmModal').modal('show');
+        }
+
+        function logout() {
+            $.ajax({
+                url: '/api/v1/logout',
+                method: 'POST',
+                success: function() {
+                    window.location.href = '/';
+                }
+            });
+        }
+    </script>
+    <script src="/src/adminDashboard.js"></script>
+</body>
+</html>
